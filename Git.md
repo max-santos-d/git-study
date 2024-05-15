@@ -65,8 +65,40 @@ No Linux:
 
     - Para outras distribuições, consulte a documentação específica da distribuição.
 
-2. Após a instalação, você pode verificar se o Git foi instalado corretamente executando o comando `git --version` no terminal. 
+2. Após a instalação, você pode verificar se o Git foi instalado corretamente executando o comando `git --version` no terminal.
 
+## Branches
 
+No Git, os branches (ramificações) são caminhos separados de desenvolvimento no seu repositório. Eles permitem que você trabalhe em diferentes recursos ou correções de bugs de forma isolada, sem interferir no código principal do projeto.
 
+Ao criar um novo branch, você está essencialmente criando uma cópia do estado atual do seu código. Você pode fazer alterações nesse branch sem afetar o código em outros branches. Isso é útil para experimentar novas ideias, desenvolver recursos separadamente ou corrigir problemas sem comprometer o código principal.
 
+Para criar um novo branch no Git, você pode usar o comando `git branch` seguido pelo nome do novo branch que você deseja criar. Aqui está como você pode fazer isso:
+
+~~~bash
+# Para criar um novo branch chamado "nome-do-branch":
+git branch nome-do-branch
+~~~
+
+No entanto, apenas criar um branch não muda automaticamente para ele. Para começar a trabalhar no novo branch que você acabou de criar, você precisa usar o comando `git checkout` ou `git switch`, seguido pelo nome do branch:
+
+~~~bash
+# Para mudar para o novo branch:
+git checkout nome-do-branch
+~~~
+
+ou
+
+~~~bash
+# Para mudar para o novo branch (a partir do Git 2.23):
+git switch nome-do-branch
+~~~
+
+Uma maneira mais conveniente de criar e mudar para um novo branch ao mesmo tempo é usar o comando `git checkout -b`, que cria um novo branch e muda para ele em uma única etapa:
+
+~~~bash
+# Para criar e mudar para um novo branch:
+git checkout -b nome-do-branch
+~~~
+
+Após criar e mudar para um novo branch, você pode fazer alterações no seu código e realizar commits normalmente. Essas alterações ficarão isoladas no novo branch até que você decida mesclá-las de volta para o branch principal ou para outro branch.
