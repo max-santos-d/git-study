@@ -11,7 +11,7 @@ Assim, Linus Torvalds desenvolveu o Git como uma solução distribuída e eficie
 Na prática, o Git funciona seguindo alguns conceitos-chave:
 
 1. Repositório: O Git gerencia um repositório, que é basicamente um diretório onde seus arquivos e histórico de alterações são armazenados.
-2. Snapshot: Em vez de armazenar apenas as alterações feitas em cada arquivo, o Git armazena instantâneos (snapshots) de todo o sistema de arquivos em determinados pontos no tempo. Isso significa que ele captura o estado completo do projeto a cada commit. 
+2. Snapshot: Em vez de armazenar apenas as alterações feitas em cada arquivo, o Git armazena instantâneos (snapshots) de todo o sistema de arquivos em determinados pontos no tempo. Isso significa que ele captura o estado completo do projeto a cada commit.
 3. Commits: Um commit é uma alteração no seu projeto. Cada commit no Git é como uma foto do seu código em um determinado momento. Cada commit tem um hash único que o identifica.
 4. Branches (ramificações): O Git permite que você crie ramificações do seu código. Isso é útil para desenvolver novos recursos ou corrigir bugs sem afetar o código principal. As ramificações no Git são leves e rápidas de criar.
 5. Merging (fundir): Depois de trabalhar em uma ramificação e estar satisfeito com as alterações, você pode fundir (merge) essa ramificação de volta à ramificação principal (geralmente a master ou main).
@@ -102,3 +102,130 @@ git checkout -b nome-do-branch
 ~~~
 
 Após criar e mudar para um novo branch, você pode fazer alterações no seu código e realizar commits normalmente. Essas alterações ficarão isoladas no novo branch até que você decida mesclá-las de volta para o branch principal ou para outro branch.
+
+Para realizar o procedimento de merge entre branches no Git, você segue estes passos:
+
+1. Mude para o branch de destino: Primeiro, mude para o branch onde você deseja mesclar as alterações. Por exemplo, se você deseja mesclar as alterações de um branch chamado `feature`, mude para o branch onde você deseja aplicar essas alterações, geralmente é a branch principal (`master` ou `main`).
+
+    ~~~bash
+    git checkout master
+    ~~~
+
+2. Execute o merge: Agora, você pode mesclar as alterações do branch `feature` para o branch atual usando o comando `git merge`.
+
+    ~~~bash
+    git merge feature
+    ~~~
+
+    Isso mesclará as alterações do branch `feature` para o branch atual (neste caso, `master`).
+
+3. Resolva conflitos (se houver): Se houver conflitos entre as alterações nos dois branches (ou seja, se as mesmas partes do código foram alteradas em ambos os branches), o Git informará sobre esses conflitos e você precisará resolvê-los manualmente. O Git marcará os arquivos com conflitos e você precisará editar esses arquivos para resolver as diferenças.
+4. Conclua o merge: Após resolver todos os conflitos, adicione os arquivos modificados ao stage (área de preparação) e faça um commit para concluir o merge.
+
+    ~~~bash
+    git add .
+    git commit -m "Merge branch 'feature' into master"
+    ~~~
+
+5. Verifique o histórico: Após o merge, você pode verificar o histórico de commits para confirmar que o merge foi bem-sucedido.
+
+    ~~~bash
+    git log
+    ~~~
+
+Você pode continuar trabalhando no branch principal ou, se necessário, excluir o branch "feature" após mesclar suas alterações:
+
+~~~bash
+git branch -d feature
+~~~
+
+## Git Flow
+
+O Git Flow é um modelo de fluxo de trabalho popular para o Git que fornece um conjunto de regras e convenções sobre como organizar branches em um repositório Git. Foi proposto por Vincent Driessen em um artigo em 2010 e se tornou uma prática comum em muitos projetos de software.
+
+O Git Flow define uma estrutura para gerenciar o desenvolvimento de novos recursos, lançamentos e correções de bugs em um projeto. Ele utiliza várias branches para organizar o fluxo de trabalho, incluindo:
+
+1. Branch master: Esta é a branch principal do projeto. Ela sempre reflete o estado de produção do software.
+2. Branch develop: Esta é a branch de desenvolvimento principal. Ela é usada para integrar e testar novos recursos antes de serem mesclados na branch master.
+3. Branches de feature (recursos): Para cada nova funcionalidade ou recurso que você deseja adicionar ao projeto, você cria uma nova branch de feature a partir da branch develop. Uma vez concluída, essa branch de feature é mesclada de volta para a develop.
+4. Branches de release (lançamento): Quando você está se preparando para fazer um novo lançamento do software, você cria uma branch de release a partir da develop. Nesta branch, você pode finalizar os detalhes do lançamento, como correções de bugs e atualizações de documentação. Depois que o lançamento é considerado pronto, ele é mesclado na master e na develop, e uma tag é criada para marcar o lançamento.
+5. Branches de hotfix (correção de bugs): Se surgir um bug em produção que precise ser corrigido imediatamente, você pode criar uma branch de hotfix a partir da master. Após a correção do bug, essa branch é mesclada de volta para a master e também para a develop.
+
+O Git Flow fornece uma estrutura organizada e bem definida para colaboração em equipe e gerenciamento de versões em projetos de software. No entanto, é importante notar que o Git Flow pode ser um pouco pesado para projetos pequenos ou equipes menores, e pode haver variações ou simplificações do modelo dependendo das necessidades do projeto. 
+
+- [saiba mais - atlassian](https://www.atlassian.com/br/git/tutorials/comparing-workflows/gitflow-workflow)
+- [saiba mais - alura](https://www.alura.com.br/artigos/git-flow-o-que-e-como-quando-utilizar)
+
+![Ramificações](./img/git-flow.svg)
+
+## Implementação do Git Flow
+
+Existem duas formas de implementar o Git Flow, a primeira é utilizar os comandos básicos do Git, a outra é utilizar uma CLI que ajuda a simplificar o fluxo do Git Flow.
+
+1. Inicialize o repositório Git:
+    - A primeira coisa que temos que fazer é criar uma Branch Develop a partir da Branch Master. Para isso, utilize:
+        - Com comando básico do Git: `git checkout -b develop`
+        - Com a CLI do Git-flow: `git flow init`
+2. Branch Feature:
+    - Criação de uma feature
+        - Com comandos básicos do Git:
+
+            ~~~bash
+            git checkout develop
+            git checkout -b name-feature
+            ~~~
+
+        - Com a CLI do Git-flow: `git flow feature start name-feature`
+    - Finalização de uma feature:
+        - Com comandos básicos do Git:
+
+            ~~~bash
+            git checkout develop
+            git merge name-feature
+            ~~~
+
+        - Com a CLI do Git-flow: `git flow feature finish name-feature`
+3. Branch Hotfix:
+    - Criação de um Hotfix
+        - Com comandos básicos do Git:
+
+            ~~~bash
+            git checkout master
+            git checkout -b name-hotfix
+            ~~~
+
+        - Com a CLI do Git-flow: `git flow hotfix start name-hotfix`
+    - Finalização de um Hotfix
+        - Com comandos básicos do Git:
+
+        ~~~bash
+        git checkout master
+        git merge name-hotfix
+        git checkout develop
+        git merge name-hotfix
+        git tag name-hotfix
+        ~~~
+
+        - Com a CLI do Git-flow: `git flow hotfix finish name-hotfix`
+4. Branch Release:
+    - Criação de uma Release
+        - Com comandos básicos do Git:
+
+            ~~~bash
+            git checkout develop
+            git checkout -b release/1.0.0
+            ~~~
+
+        - Com a CLI do Git-flow: `git flow release start 1.0.0`
+    - Finalização de uma Release
+        - Com comandos básicos do Git:
+
+            ~~~bash
+            git checkout master
+            git merge release/1.0.0
+            git checkout develop
+            git merge release/1.0.0
+            git tag 1.0.0
+            ~~~
+
+        - Com a CLI do Git-flow: `git flow release finish 1.0.0`
